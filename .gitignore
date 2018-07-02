@@ -13,6 +13,8 @@
 *.pdf
 *.xls?
 *.ico
+*.psd
+*.jpg
 
 # Системные папки
 /backup/
