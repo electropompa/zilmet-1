@@ -26,17 +26,19 @@
 </head>
 
 <body class="site">
+
 	<section class="header-top-advert">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-					<p class="text-xs-center">
-						<a href="/contact/" target="_blank" rel="nofollow">Открыт склад в Самаре (перейти в контакты)</a>
+					<p class="text-center d-flex align-items-center justify-content-center">
+						<span class="white">С 1 июля цены снижены на 5%</span>
 					</p>
 				</div>
 			</div>
 		</div>
 	</section>
+
   <div class="body"> 
     <div class="b__fixed"></div>
     <div class="container">
@@ -45,16 +47,16 @@
         <div class="row">
 
           <!-- Logo -->
-          <div class="col-xs-12 col-sm-5 col-md-3 col-lg-2 col-xl-2 text-xs-center">
+          <div class="col-12 col-sm-5 col-md-3 col-lg-2 col-xl-2 text-center">
             <a href="/">
               <img src="/images/headers/zilmet-logo-new.jpg" alt="Zilmet logo" class="zilmet-logo"> 
             </a>
           </div>
 
-          <div class="col-sm-5 col-md-5 hidden-sm-down hidden-lg-up">
+          <div class="col-sm-5 hidden-sm-down hidden-lg-up">
             <p class="header-desc sm text-md-center">Эксклюзивный дистрибьютор<br>Zilmet S.p.A. в России</p>
           </div>
-          <div class="col-xs-12 push-xs-0 col-sm-6 offset-sm-1 push-sm-0 col-md-4 offset-md-0 push-md-0 push-lg-7 col-lg-3 text-xs-center text-sm-right">
+          <div class="col-12 push-xs-0 col-sm-6 offset-sm-1 push-sm-0 col-md-4 offset-md-0 push-md-0 push-lg-7 col-lg-3 text-center text-sm-right">
               <a href="tel:+74959819244" rel="nofollow" class="phone-moscow">+7 (495) 981-92-44</a>
               <a href="tel:88001000077" rel="nofollow" class="header-phone"> 8 800 100 00 77</a>
               <span class="call-free-desc">Звонок по России бесплатный</span>
@@ -62,16 +64,16 @@
               <time datetime="Sa 09:00-17:00"><small>Пт:</small> 9.00 - 17.00</time>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-12 pull-md-0 pull-lg-3 col-lg-7">
+          <div class="col-12 col-sm-12 col-md-12 pull-md-0 pull-lg-3 col-lg-7">
             <div class="row contacts">
               <div class="col-sm-12 hidden-md-down">
-                <p class="header-desc text-xs-center">Эксклюзивный дистрибьютор <br class="hidden-lg-up">Zilmet&nbsp;S.p.A. в России</p>
+                <p class="header-desc text-center">Эксклюзивный дистрибьютор <br class="hidden-lg-up">Zilmet&nbsp;S.p.A. в России</p>
               </div>
               
-              <div class="col-xs-12 col-md-7 col-lg-6 col-lg-offset-1  text-xs-center">
+              <div class="col-12 col-md-7 col-lg-6 col-lg-offset-1  text-center">
                 <p class="address"><a href="/contact-us/">141707, МО, г. Долгопрудный, Лихачевский проезд, д.8</a></p>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 text-xs-center text-md-left">
+              <div class="col-12 col-sm-12 col-md-5 col-lg-5 text-center text-md-left">
                 <span class="header-mail"><img src="/wp-content/themes/zilmet/images/mail.svg" class="mail-ico hidden-xs-down">zilmet@zilmet.ru</span>
                 <br class="hidden-sm-down">
                 <img src="/wp-content/themes/zilmet/images/package.svg" alt="Доставка" class="hidden-xs-down" width="20"> <a href="/dostavka" class="shipping">Оплата и доставка</a>
@@ -81,7 +83,7 @@
         </div><!-- row -->
       </header>
       <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-12">
         <?php wp_nav_menu( array(
                 'theme_location'  => 'primary_header_menu',
                 'menu'            => '', 
@@ -103,7 +105,7 @@
       </div>
 
       <div class="row">
-        <div id="sidebar" class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+        <div id="sidebar" class="col-12 col-sm-4 col-md-3 col-lg-3">
           <?php wp_nav_menu( array(
                   'theme_location'  => 'aside_menu',
                   'menu'            => '', 
@@ -123,4 +125,3 @@
                 ) ); ?>
           <div class="col-lg-12"><?php woocommerce_cart_totals(); ?></div>
         </div>
-        <main id="content" role="main"">

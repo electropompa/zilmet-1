@@ -1,21 +1,42 @@
 <?php
+/**
+ * Zilmet functions and definitions
+ *
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ *
+ * @package Zilmet
+ */
 
-if ( !is_admin() )  show_admin_bar(false);
+if ( ! function_exists( 'zilmet_setup' ) ) {
+  function zilmet_setup() {
+    define('WOOCOMMERCE_USE_CSS', false);
 
-add_theme_support( 'woocommerce' );
-define('WOOCOMMERCE_USE_CSS', false);
+    add_theme_support( 'woocommerce' );
+    add_theme_support( 'html5', array( 'search-form' ) );
+  }
+}
 
-wp_register_style( 'bootstrap', get_template_directory_uri() . "/css/bootstrap4.min.css", '', '', '' );
-wp_register_style( 'fixed', get_template_directory_uri() . "/css/fixed.css", '', '', '' );
-wp_register_style( 'style', get_template_directory_uri() . "/css/style.css", '', '', '' );
+add_action( 'after_setup_theme', 'zilmet_setup' );
 
-wp_register_script( 'bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', '', '', '');
+if ( !is_admin() ) {
+  show_admin_bar(false);
 
-function woo_style() {
-  wp_register_style( 'my-woocommerce', get_template_directory_uri() . '/woocommerce.css', null, 1.0, 'screen' );
-  wp_enqueue_style( 'my-woocommerce' ); 
-} 
-add_action( 'wp_enqueue_scripts', 'woo_style' );
+  add_action( 'wp_print_styles', 'zilmet_style_method' );
+}
+
+function zilmet_style_method(){
+  wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', '', '', '' );
+  wp_enqueue_style( 'zilmet-woocommerce', get_template_directory_uri() . '/woocommerce.css', null, 1.0, 'screen' );
+  // wp_enqueue_style( 'fixed', get_template_directory_uri() . "/css/fixed.css", '', '', '' );
+  wp_enqueue_style( 'style', get_template_directory_uri() . "/css/style.css", '', '', '' );
+}
+
+add_action('wp_enqueue_scripts', 'fishplanet_scripts_method');
+function fishplanet_scripts_method(){
+  wp_deregister_script('jquery');
+  wp_enqueue_script('jquery', "https://yastatic.net/jquery/2.0.3/jquery.min.js", '', '', 'true');
+  wp_enqueue_script('bootstrap', "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js", '', '', 'true');
+}
 
 register_nav_menus( array( 
   'primary_header_menu' => __( 'Верхнее меню' ), 
