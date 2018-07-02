@@ -1,0 +1,24 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Lobster&subset=cyrillic);
+
+@media (min-width: 1300px){
+  .b__fixed {
+	font-family: 'Lobster', cursive;
+	width:144px;
+	height:145px;
+	background: url('/wp-content/themes/zilmet/images/lenta.png') no-repeat 20px 0px;
+  background-size: contain;
+	position: fixed;
+  // margin-top: -41px;
+  right: calc(13% - 150px);
+  }
+  .b__fixed:after {
+    content: "С Днем Победы!";
+    color: red;
+    font-size: 26px;
+    margin-top: 150px;
+    text-align:center;
+    display: block;
+    line-height: 1.1;
+    text-shadow: 1px 1px 1px white;
+  } 
+}
