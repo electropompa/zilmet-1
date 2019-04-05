@@ -1,288 +1,18 @@
-$blue-900:#0d47a1;
-$blue-800:#1565c0;
-$blue-700:#1976d2;
-$blue-600:#1e88e5;
-$blue-500:#2196f3;
-$blue-400:#42a5f5;
-$blue-300:#64b5f6;
-$blue-200:#90caf9;
-$blue-100:#bbdefb;
-
-$indigo-900:#1a237e;
-$indigo-800:#283593;
-$indigo-700:#303f9f;
-$indigo-600:#3949ab;
-$indigo-500:#3f51b5;
-$indigo-400:#5c6bc0;
-$indigo-300:#7986cb;
-$indigo-200:#9fa8da;
-$indigo-100:#c5cae9;
-
-$red-700:#d32f2f;
-
-$bg-body: #f9f9f9;
-$text-grey: #474748;
-$blue-dark: $indigo-800;
-$red: $red-700;
-
-$body-font: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-$aside-menu-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-$top-menu-bg: $blue-dark;
-$top-menu-hover: $blue-700;
-
-$aside-menu-bg: $indigo-700;
-$aside-menu-hover: $red;
-
-
 /*
 Theme Name: Zilmet
 Author: Alexandr Khokhryakov
 */
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic);
 
-.col-xs-1 img, .col-sm-1 img, .col-md-1 img, .col-lg-1 img,
-.col-xs-2 img, .col-sm-2 img, .col-md-2 img, .col-lg-2 img,
-.col-xs-3 img, .col-sm-3 img, .col-md-3 img, .col-lg-3 img,
-.col-xs-4 img, .col-sm-4 img, .col-md-4 img, .col-lg-4 img,
-.col-xs-5 img, .col-sm-5 img, .col-md-5 img, .col-lg-5 img,
-.col-xs-6 img, .col-sm-6 img, .col-md-6 img, .col-lg-6 img,
-.col-xs-7 img, .col-sm-7 img, .col-md-7 img, .col-lg-7 img,
-.col-xs-8 img, .col-sm-8 img, .col-md-8 img, .col-lg-8 img,
-.col-xs-9 img, .col-sm-9 img, .col-md-9 img, .col-lg-9 img,
-.col-xs-10 img, .col-sm-10 img, .col-md-10 img, .col-lg-10 img,
-.col-xs-11 img, .col-sm-11 img, .col-md-11 img, .col-lg-11 img,
-.col-xs-12 img, .col-sm-12 img, .col-md-12 img, .col-lg-12 img {max-width: 100%;}
-
-ol, ul { padding-left: 20px; }
-
-label, .label{ color: black; font-weight: 300; margin-bottom: 0;}
 .row.m-dis { margin-left: 0; margin-right:0; }
 
-body.site {
-  background-color: $bg-body;
-  font-family: $body-font;
-}
-
-.body .container {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.3);
-}
-
-h1 {font-size: 29px;}
-h2 {font-size: 23px;}
-h1, h2, h3, h4, h5, h6 { margin-top: 0; margin-bottom: 15px;}
-
-p {
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-ul li, ol li {font-size: 16px; line-height: 1.7;}
-
-.white {
-  color: #fff;
-}
-
-.product-description {
- table {
-    font-size: 15px;
-  }
-}
-
-.woocommerce-breadcrumb { margin-bottom: 10px; }
-
-
-/* header */
-header {
-  margin-bottom: 15px;
-
-  .zilmet-logo {max-width: 100%; max-height: 120px; margin-bottom: 10px;}
-
-  @media(max-width:780px) {
-    margin-top: 1vw;
-  }
-
-  .header-desc {
-    color: $blue-dark;
-    font-size: 26px;
-    line-height: 1.2;
-    margin-bottom: 1vw;
-    &.sm {
-      font-size: 22px;
-    }
-  }
-  .geo-ico-link {display: inline-block;}
-  .geo-ico {
-    display: inline-block;
-    // float: left;
-    margin-left: 10px;
-    margin-bottom: 30px;
-  }
-
-  .address {display: inline-block;}
-
-  .address a {
-    color: $text-grey; 
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  .mail-ico {
-    width: 19px;
-    display: inline-block;
-    margin-right: 13px;
-    margin-top: -5px;
-  }
-
-  .header-mail { 
-    color: $blue-dark;
-    font-weight: bold;
-    display: inline-block;
-    font-size: 16px; 
-    margin: 0 20px 7px 0; 
-    padding: 0; 
-  }
-
-  a.shipping {
-    color: $text-grey;
-    text-decoration: underline;
-    font-size: 16px;
-    display: inline-block;
-    margin-left: 5px;
-
-    &:hover {
-      color: $blue-dark;
-    }
-  }
-  .phone-moscow { 
-    color: $blue-dark;
-    font-weight: bold;
-    display: block;
-    font-size: 23.5px;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-
-    &:hover {
-      color: $red;
-    }
-  }
-  .header-phone  {
-    color: $blue-dark;
-    font-weight: bold;
-    display: block;
-    font-size: 28px;
-    margin-top: 5px;
-    line-height: 1;
-
-    &:hover {
-      color: $red;
-    }
-  }
-  .call-free-desc {
-    color: grey;
-    font-weight: normal;
-    display: block;
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-  }
-  time {
-    color: $text-grey;
-    font-weight: normal;
-    display: block;
-    font-size: 16px;
-  }
-}
-
-/*menu*/
-nav.navigation {
-  margin-bottom: 15px;
-  background: $blue-dark;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-.menu li a {
-      display: block;
-      width: 100%; 
-      height: 100%;
-      margin: 0;
-}
-#menu-primary-top {
-  margin-bottom: 0;
-  padding: 0;
-
-  li {
-    display: inline-block;
-    list-style: none;
-    padding: 0;
-
-    a:hover {
-      text-decoration: none;
-      background-color: $top-menu-hover;
-    }
-  }
-  
-  > li > a {
-    color: white;
-    padding: 13px;
-    font-size: 13px;
-    text-transform: uppercase;
-  }
-
-  li + li {margin-left: -3px;}
-
-  .current-menu-item {
-    background-color: $top-menu-hover;
-  }
-}
-#menu-aside-menu {
-  padding: 0;
-  width: 100%;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-
-  li {
-    display: inline-block;
-    list-style: none;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: $aside-menu-bg;
-    border-bottom: 1px solid lighten($aside-menu-bg, 30);
-    text-align: right;
-
-    &:last-child {
-      border-bottom: none;
-    }
-    &:hover {
-      background: $aside-menu-hover;
-    }
-    &.current-menu-item {
-      background: $aside-menu-hover;
-    }
-
-    a {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      font-family: $aside-menu-font;
-      padding: 8px 10px;
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
 .boilers {
-  background: $blue-dark;
+  background: $dark-blue;
   color: white;
   display:block;
   padding: 18px 24px;
   margin-bottom:30px;
   border-radius: 10px;
-  text-decoration:underline;
+  text-decoration: underline;
   font-size: 18px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -294,14 +24,6 @@ nav.navigation {
   }
 }
 
-.wp-pagenavi {
-  padding: 20px 0;
-}
-
-.search{
-  padding-top: 4px;
-  margin-right: 5px;
-}
 select{
   width: 122px;
 }
@@ -381,80 +103,42 @@ table.prod_buttons {
   font-weight:bold;
 }
 
-/* Калькуляторы */
-.calculator {
-  margin-top: 20px;
-  input {
-    margin-bottom: 20px;
-    width: 80px;
-
-    &[type="button"] {
-      margin-top: 20px;
-      padding: 8px;
-      width: 120px;
-      background: $indigo-700;
-      border: none;
-      color: white;
-      &:hover {
-        background:$red;
-      }
-      &:active {
-        background: $indigo-700;
-      }
-    }
-  }
-}
-
 /* Новости */
-.moduletable > h3 {
-  font-family: 'Times New Roman', serif;
-  font-size: 26px;
-  line-height: 1.5em;
-}
-h4.newsflash-title {
-  color: red;
-  font-size: 24px;
-  line-height: 1.5em;
-  margin-bottom: 10px;
-}
-.newsflash p {
-  font-size: 16px;
-  line-height: 1.5em;
-}
-.newsflash ul {
-  font-size: 15px;
-  list-style: none;
-  padding:0;
-  margin:0;
-}
-.newsflash li {
-  margin-bottom: 5px;
-}
-.newsflash {
-  margin-bottom: 30px;
-}
-.hydro-sale {
-  margin-top:-49px;
-}
-ul.lh18 li {
-  font-size: 16px;
-  line-height: 1.8em;
-  list-style: none;
-}
-li.item-134{
-  margin-top: 8px;
-}
+h4.newsflash-title 
+  color: red
+  font-size: 24px
+  line-height: 1.5em
+  margin-bottom: 10px
 
-.blue {
-  color: #64b5f6;
-}
-.red {
-  color: red;
-}
-h1.blue {
-  color: #246294;
-  margin-top: 10px;
-}
+.newsflash p 
+  font-size: 16px
+  line-height: 1.5em
+
+.newsflash ul 
+  font-size: 15px
+  list-style: none
+  padding: 0
+  margin: 0
+
+.newsflash li 
+  margin-bottom: 5px
+
+.newsflash 
+  margin-bottom: 30px
+
+.hydro-sale 
+  margin-top: -49px
+
+ul.lh18 li 
+  font-size: 16px
+  line-height: 1.8em
+  list-style: none
+
+li.item-134
+  margin-top: 8px
+
+h1
+  margin-top: 10px
 
 /* shop */
 .summary.entry-summary {
@@ -474,24 +158,7 @@ h1.product_title.entry-title {
   margin-bottom: 10px;
   font-size: 23px;
 }
-.variations td.label { padding: 10px; display: inline-block;}
-.variations .label { vertical-align: middle; font-size: 16px; }
-.reset_variations { padding-left: 5px;}
-.single_variation_wrap {margin-top: 5px;}
-.single_variation { padding-left: 10px; font-size: 16px;}
-.single_variation .amount { padding-left: 20px; font-weight: bold; }
-.variations_button .quantity {margin: 15px 10px;}
 
-button[type="submit"].single_add_to_cart_button{
-  border: none;
-  background: $blue-dark;
-  margin-left: 10px;
-  padding: 4px 12px;
-  border-radius: 3px;
-  color: white;
-}
-button[type="submit"].single_add_to_cart_button:hover{ background: $red; }
-.product_meta { margin: 13px 10px; }
 
 /* Модуль корзины */
 .cart_title {
@@ -503,71 +170,33 @@ button[type="submit"].single_add_to_cart_button:hover{ background: $red; }
   margin-bottom: 5px;
 }
 
-/* Дилеры */
-#dealers {
-  ul {
-      padding-left: 0;
-      margin-left: 0;
-    li {
-      font-size: 14px;
-      list-style: none;
-      margin-bottom: 5px;
 
-      b {
-        font-size: 1.1em;
-      }
-    }
-  }
-}
-
-/* footer */
-footer {
+.products {
   margin-top: 20px;
-  padding: 20px;
-  background: $blue-dark;
-  color: white;
-
-  a {
-    text-decoration: underline;
-    font-size: 14px;
-    color: white;
-    line-height: 1.7;
-
-    &:hover {
-      color: $blue-100;
+  .product_cat-sale.sale{
+    .onsale {
+      position: relative;
+      top: 10px;
+      left: 0px;
+      color: black;
+      font-weight: bold;
     }
   }
-
-}
-.navbar {
-  padding: 0;
 }
 
-.header-top-advert {
-  background: linear-gradient(to left, #FF416C, #FF4B2B);
-  margin-bottom: 15px;
-  border-top: 20px;
-  display: block;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 1px;
-  padding: 10px 0;
-  span {
-    display: inline-block;
-    //margin-top: 20px;
-  }
+.archive-product_container, .related.products{
 
-  p {
-    margin: 0;
-    padding: 5px;
-    font-size: 24px;
-  }
+  .product {
+    border: 1px solid grey;
 
-  a {
-
-    text-decoration: underline;
-    &:hover {
-      text-decoration: none;
+    .price {
+      display: block;
+      padding: 10px 20px 10px;
+      font-weight: bold;
+      color: blue;
+      .woocommerce-Price-amount {
+        font-size: 14px;
+      }
     }
   }
 }

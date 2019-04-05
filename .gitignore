@@ -18,11 +18,15 @@
 
 # Системные папки
 /backup/
+/backups/
 /img/
 images/
 /temp/
 /sp/
 /SSL/
+/sberbank/
+/yandex market/
+/call back/
 
 # Подключаемые библиотеки
 /assets/
@@ -30,6 +34,7 @@ images/
 # Движок WP
 *.log
 
+PSD/
 PDF/
 /public/*
 /public/wp-content/*

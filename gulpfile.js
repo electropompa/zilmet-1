@@ -11,13 +11,13 @@ var gulp      = require('gulp'),
 
 gulp.task('watch', function(){
   livereload.listen();
-  gulp.watch('frontend/sass/*.scss', gulp.series( 'sass'));
-  gulp.watch('public/wp-content/themes/zilmet/*.php').on('change', livereload.changed);
+  gulp.watch('frontend/sass/*.sass', gulp.series( 'sass'));
+  gulp.watch('public/wp-content/themes/zilmet/**/*.php').on('change', livereload.changed);
   gulp.watch('public/wp-content/themes/zilmet/css/*.css').on('change', livereload.changed);
 });
 
 gulp.task('sass', function () {
-  return gulp.src('frontend/sass/**/*.scss')
+  return gulp.src('frontend/sass/style.sass')
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer())

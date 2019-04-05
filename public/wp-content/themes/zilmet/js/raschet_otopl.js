@@ -1,338 +1,325 @@
-function calc_v() {
-	
-	var max_temp = document.getElementById("max_temp").value.replace( ",", "." );
-	var p_pred = document.getElementById("p_pred").value.replace( ",", "." );
-	var p_max = document.getElementById("p_max").value.replace( ",", "." );
-	var vol = document.getElementById("vol").value.replace( ",", "." );
-	var result_v = document.getElementById("result_v");
-	var result_r = document.getElementById("result_r");
+;'use strict';
 
-	var bak_vol = 0;
+var tanks = {
+  cal : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/rasshiritelnye/cal-pro/' + attribute + '" target="_blank">CAL-PRO</a>';
+    },
+    volumes: [ 4, 8, 12, 18, 25, 35, 50, 80, 105, 200, 300, 400, 600, 700, 800, 900 ],
+    water: false
+  }, 
+  ultra : {
+    link : function (){
+      return '<a href="/baki/gidroakkumulyatori-ultra-pro/" target="_blank">ULTRA-PRO</a>';
+    },
+    volumes : [ 19, 24, 50, 60, 80, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000 ],
+    water: true
+  },
+  oem   : {
+    link : function (){
+      return '<a href="/baki/oem-pro" target="_blank">OEM-PRO</a>';
+    },
+    volumes : [ 2, 3, 4, 6, 8, 10, 12, 14, 18 ],
+    water: false
+  },
+  evo : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/gidroakkumulyatory-ultra-pro/tehnopren/' + attribute + '" target="_blank">ULTRA-PRO EVO</a>';
+    },
+    volumes : [ 8, 12, 24, 50, 80, 100 ],
+    water: true
+  },
+  inox : {
+    link : function (){
+      return '<a href="/baki/inox-pro/" target="_blank">INOX-PRO</a>';
+    },
+    volumes : [ 0.16, 0.5, 1, 2, 8, 12, 18, 24, 60, 100 ],
+    water: true
+  },
+  easy  : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/rasshiritelnye/easy-pro/' + attribute + '" target="_blank">EASY-PRO</a>';
+    },
+    volumes : [ 8, 12, 18, 24 ],
+    water: true
+  },
+  hy    : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/gidroakkumulyatory/hy-pro/' + attribute + '" target="_blank">HY-PRO</a>';
+    },
+    volumes : [ 2, 8, 12, 19, 24 ],
+    water: true
+  },
+  hydro : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/rasshiritelnye/hydro-pro/' + attribute + '" target="_blank">HYDRO-PRO</a>';
+    },
+    volumes : [ 2, 5, 18, 24, 35, 50, 105, 150, 200, 250, 300, 400, 500, 600 ],
+    water: true
+  },
+  water : {
+    link: function ( volume ) {
+      var attribute = volume ? "?attribute_pa_volume=" + volume : '';
+      return '<a href="/bak/rasshiritelnye/water-pro' + attribute + '" target="_blank">WATER-PRO</a>';
+    },
+    volumes : [ 5, 7, 7.5, 8, 12, 18, 24 ],
+    water: true
+  },
+}
 
-	var e = 0;
-	max_temp = parseFloat(max_temp);
-	p_pred = parseFloat(p_pred) + 1;
-	p_max = parseFloat(p_max) + 1;
-	vol = parseFloat(vol);
+function validateInputValue(id, min, max){
 
-	e = 4.31422* Math.pow(10,-6)*max_temp*max_temp-9.18129*Math.pow(10,-6)*max_temp+0.00161292;
-	bak_vol = vol*e;
-	bak_vol /= 1 - p_pred / p_max;
+  min = min || 0;
+  max = max || Infinity;
 
-	bak_vol = Math.round(bak_vol*100) / 100;
+  var element = document.getElementById(id);
+  var value = element.value;
 
-	result_v.innerHTML = bak_vol;
+  if( value == "" || value < min || value > max){
+    
+    element.classList.add('is-invalid');
 
-	var price_r = 0;
+    element.nextElementSibling.innerHTML = ( value == "" ) ? "Введите значение" :
+      (value < min) ? 'Слишком маленькое значение' :
+      (value > max) ? 'Слишком большое значение': 'Неверное значение';
+    return;
 
-	if (p_max <= 4) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 6) {price_r = 6 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 6 && bak_vol < 7) {price_r = 7 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 7 && bak_vol < 7.5) {price_r = 7.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 7.5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 10) {price_r = 10 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 10 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 14) {price_r = 14 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 14 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/tehnopren\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/tehnopren\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 700) {price_r = 700 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 700 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 800) {price_r = 800 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 800 && bak_vol < 900) {price_r = 900 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 900 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+  } else {
 
-	if (p_max > 4 && p_max <= 4.5) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 700) {price_r = 700 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 700 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 800) {price_r = 800 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 800 && bak_vol < 900) {price_r = 900 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 900 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
-	
-	if (p_max > 4.5 && p_max <= 5) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 700) {price_r = 700 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 700 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 800) {price_r = 800 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 800 && bak_vol < 900) {price_r = 900 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 900 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+    if(element.classList.contains("is-invalid")){
+      element.classList.remove("is-invalid");
+    }
 
-	if (p_max > 5 && p_max <= 6) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 700) {price_r = 700 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 700 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 800) {price_r = 800 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 800 && bak_vol < 900) {price_r = 900 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 900 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+    return parseFloat(value.replace( ",", "." ));
+  }
+}
 
-	if (p_max > 6 && p_max <= 7) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 700) {price_r = 700 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 700 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 800) {price_r = 800 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 800 && bak_vol < 900) {price_r = 900 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/cal-pro/\" target=\"_blank\">CAL-PRO</a></b>"};
-		if (bak_vol >= 900 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+function compareNumeric(a, b){
+  if (a > b) return 1;
+  if (a < b) return -1;
+}
 
-	if (p_max > 7 && p_max <= 9) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+function calcVolumeHeat(maxTemp, pPred, pMax, vol){
 
-	if (p_max > 7 && p_max <= 11) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 0.5) {price_r = 0.5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.5 && bak_vol < 1) {price_r = 1 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 1 && bak_vol < 2) {price_r = 2 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a>, <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 2 && bak_vol < 3) {price_r = 3 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 3 && bak_vol < 4) {price_r = 4 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/oem-pro\" target=\"_blank\">OEM-PRO</a></b>"};
-		if (bak_vol >= 4 && bak_vol < 5) {price_r = 5 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 5 && bak_vol < 8) {price_r = 8 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>,<a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 8 && bak_vol < 12) {price_r = 12 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 12 && bak_vol < 18) {price_r = 18 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 18 && bak_vol < 19) {price_r = 19 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a></b>"};
-		if (bak_vol >= 19 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/easy-pro\" target=\"_blank\">EASY-PRO</a>, <a href=\"/bak/rasshiritelnye/water-pro\" target=\"_blank\">WATER-PRO</a>, <a href=\"/bak/gidroakkumulyatori/hy-pro/\" target=\"_blank\">HY-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 35) {price_r = 35 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 35 && bak_vol < 50) {price_r = 50 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 50 && bak_vol < 60) {price_r = 60 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 60 && bak_vol < 80) {price_r = 80 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 80 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO EVO</a>, <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 105) {price_r = 105 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 105 && bak_vol < 150) {price_r = 150 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 150 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 250) {price_r = 250 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 250 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 400) {price_r = 400 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 400 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a>, <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 600) {price_r = 600 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/bak/rasshiritelnye/hydro-pro\" target=\"_blank\">HYDRO-PRO</a></b>"};
-		if (bak_vol >= 600 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 1500) {price_r = 1500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1500 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+  if ( maxTemp === undefined || pPred === undefined || pMax === undefined || vol === undefined) {
+    return false;
+  }
 
-	if (p_max > 11 && p_max <= 16) {
-		if (bak_vol < 0.16) {price_r = 0.16 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/inox-pro\" target=\"_blank\">INOX-PRO</a></b>"};
-		if (bak_vol >= 0.16 && bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+  var e         = 0,
+      bak_vol   = 0;
 
-	if (p_max > 16 && p_max <= 17) {
-		if (bak_vol < 24) {price_r = 24 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 24 && bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 500 && bak_vol < 750) {price_r = 750 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 750 && bak_vol < 1000) {price_r = 1000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 1000 && bak_vol < 2000) {price_r = 2000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 2000 && bak_vol < 3000) {price_r = 3000 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+  e = 4.31422 * Math.pow(10, -6) * maxTemp * maxTemp - 9.18129 * Math.pow(10, -6) * maxTemp + 0.00161292;
+  bak_vol = vol * e;
+  bak_vol /= 1 - ++pPred / ++pMax;
+  bak_vol = Math.round(bak_vol * 100) / 100;
 
-	if (p_max > 17 && p_max <= 26) {
-		if (bak_vol < 100) {price_r = 100 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 100 && bak_vol < 200) {price_r = 200 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 200 && bak_vol < 300) {price_r = 300 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 300 && bak_vol < 500) {price_r = 500 + " л. <br><b>Вам подойдут баки из серии: <a href=\"/baki/gidroakkumulyatori-ultra-pro/\" target=\"_blank\">ULTRA-PRO</a></b>"};
-		if (bak_vol >= 3000 && bak_vol < 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на два бака."};
-		if (bak_vol >= 6000) {price_r = Math.round(bak_vol / 100)*100 + " л. Рекоммендуется разбить на три бака."};
-	};
+  return bak_vol;
+}
 
-	if (p_max > 26) {
-	price_r = "Необходимо уменьшить максимальное давление";
-	};
+function calcVolumeWater( waterVolume, pMax, pMin, pStart, pumpStartQuantity ){
+
+  var volume                = 16.5,
+      calcVolumeWater       = 0,
+      recomendedVolumeWater = 0;
+
+  volume *= waterVolume;
+  volume *= ++pMax;
+  volume *= ++pMin;
+  volume /= pMax - pMin;
+  volume /= ++pStart;
+  volume /= pumpStartQuantity;
+
+  return Math.round(volume * 100) / 100;
+}
+
+function calcRecomendedVolumeHeat(pMax, bak_vol){
+
+  if ( !bak_vol ) {
+    return false;
+  }
+
+  var volumesPMax25 = [ 100, 200, 300, 500 ];
+  var volumesPMax17 = volumesPMax25.concat([ 24, 750, 1000, 2000, 3000 ]).sort(compareNumeric);
+  var volumesPMax16 = volumesPMax17.concat([ 0.16 ]).sort(compareNumeric);
+  var volumesPMax11 = volumesPMax16.concat([ 0.5, 1, 2, 3, 4, 5, 8, 12, 18, 19, 35, 50, 60, 80, 105, 150, 250, 400, 600, 1500 ]).sort(compareNumeric);
+  var volumesPMax7  = volumesPMax11.concat([ 700, 800, 900 ]).sort(compareNumeric);
+  var volumesPMax4  = volumesPMax7.concat([ 6, 7, 7.5, 10, 14 ]).sort(compareNumeric);
+
+  var array = pMax <= 4  ? volumesPMax4  :
+              pMax <= 7  ? volumesPMax7  :
+              pMax <= 11 ? volumesPMax11 :
+              pMax <= 16 ? volumesPMax16 :
+              pMax <= 17 ? volumesPMax17 :
+              pMax <= 25 ? volumesPMax25 : null;
+
+  for ( var i = 0; i < array.length; i++ ) {
+    if ( bak_vol < array[i] ) {
+      return recomendedVolume = array[i];
+    }
+  }
+}
+
+function calcRecomendedVolumeWater(pMax, bak_vol){
+
+  if ( !bak_vol ) {
+    return false;
+  }
+
+  var volumesPMax25 = [ 100, 200, 300, 500 ],
+      volumesPMax16 = volumesPMax25.concat([ 24, 750, 1000, 2000, 3000 ]).sort(compareNumeric),
+      volumesPMax15 = volumesPMax17.concat([ 0.16 ]).sort(compareNumeric),
+      volumesPMax10 = volumesPMax16.concat([ 0.5, 1, 2, 5, 8, 12, 18, 19, 35, 50, 60, 80, 105, 150, 250, 400, 600, 1500 ]).sort(compareNumeric);
+
+  var array = pMax <= 10 ? volumesPMax10 :
+              pMax <= 15 ? volumesPMax15 :
+              pMax <= 16 ? volumesPMax16 :
+              pMax <= 25 ? volumesPMax25 : null;
 
 
-	result_r.innerHTML = price_r;
+  for ( var i = 0; i < array.length; i++ ) {
+    if ( bak_vol < array[i] ) {
+      return recomendedVolume = array[i];
+    }
+  }
+}
+
+function getRecomendedSeriesHeat( recomendedVolume ) {
+  var recomendedSeries = "Вам подойдут баки из серии:";
+  for (key in tanks) {
+
+    if ( tanks[key]['volumes'].indexOf( recomendedVolume ) != -1 ) {
+      recomendedSeries += " " + tanks[key].link( recomendedVolume ) + ",";
+    }
+
+  }
+
+  return recomendedSeries.substring(0, recomendedSeries.length - 1);
+}
+
+function getRecomendedSeriesWater( recomendedVolume ) {
+  var recomendedSeries = "Вам подойдут баки из серии:";
+  for (key in tanks) {
+
+    if ( tanks[key]['volumes'].indexOf( recomendedVolume ) != -1 ) {
+      if( tanks[key]['water'] ) recomendedSeries += " " + tanks[key].link( recomendedVolume ) + ",";
+    }
+
+  }
+
+  return recomendedSeries.substring(0, recomendedSeries.length - 1);
+}
+
+function outputResult(place, string){
+  document.getElementById( place ).innerHTML = string;
+}
+
+function calcHeat() {
+  
+  var maxTemp = validateInputValue("maxTemp"),
+      pPred   = validateInputValue("pPred", 1),
+      pMax    = validateInputValue("pMax", pPred, 25),
+      vol     = validateInputValue("vol");
+
+  var bak_vol = 0;
+  var price_r = 0;
+
+  bak_vol = calcVolumeHeat(maxTemp, pPred, pMax, vol);
+
+  outputResult("calcVolume", bak_vol ? bak_vol + " л." : "Ошибка!");
+
+  // Рекомендации
+
+  if( bak_vol > 6000 ){
+
+    outputResult("recomendedVolume", "Рекомендуется разбить на три бака");
+    return;
+  } else if ( bak_vol >= 3000 ){
+
+    outputResult("recomendedVolume", "Рекомендуется разбить на два бака");
+    return;
+  }
+
+  recomendedVolume = calcRecomendedVolumeHeat( pMax, bak_vol );
+
+  if( recomendedVolume ) {
+    outputResult("recomendedVolume", "<b>" + recomendedVolume  + " л.</b>");
+
+    var recomendedSeries = getRecomendedSeriesHeat(recomendedVolume);
+    outputResult("recomendedSeries", "<b>" + recomendedSeries + ".</b>");
+  } else {
+    outputResult("recomendedVolume", "Ошибка!");
+  }
+
+}
+
+function calcRecomendedVolumeWater(pMax, bak_vol){
+
+  if ( !bak_vol ) {
+    return false;
+  }
+
+  var volumesPMax25 = [ 100, 200, 300, 500 ];
+  var volumesPMax17 = volumesPMax25.concat([ 24, 750, 1000, 2000, 3000 ]).sort(compareNumeric);
+  var volumesPMax16 = volumesPMax17.concat([ 0.16 ]).sort(compareNumeric);
+  var volumesPMax11 = volumesPMax16.concat([ 0.5, 1, 2, 3, 4, 5, 8, 12, 18, 19, 35, 50, 60, 80, 105, 150, 250, 400, 600, 1500 ]).sort(compareNumeric);
+  var volumesPMax7  = volumesPMax11.concat([ 700, 800, 900 ]).sort(compareNumeric);
+  var volumesPMax4  = volumesPMax7.concat([ 6, 7, 7.5, 10, 14 ]).sort(compareNumeric);
+
+  var array = pMax <= 4  ? volumesPMax4  :
+              pMax <= 7  ? volumesPMax7  :
+              pMax <= 11 ? volumesPMax11 :
+              pMax <= 16 ? volumesPMax16 :
+              pMax <= 17 ? volumesPMax17 :
+              pMax <= 26 ? volumesPMax25 : null;
+
+  var price_r;
+
+  for ( var i = 0; i < array.length; i++ ) {
+    if ( bak_vol < array[i] ) {
+      return recomendedVolume = array[i];
+    }
+  }
+}
+
+function calcWater() {
+
+  var waterVolume       = validateInputValue("v_water"),
+      pMin              = validateInputValue("min_p"),
+      pMax              = validateInputValue("max_p", pMin),
+      pStart            = validateInputValue("p_nach"),
+      pumpStartQuantity = validateInputValue("max_n"),
+      VolumeWater       = 0,
+      recomendedVolume  = 0;
+
+  VolumeWater = calcVolumeWater( waterVolume, pMax, pMin, pStart, pumpStartQuantity );
+
+  outputResult("calcVolume", VolumeWater);
+
+  if( VolumeWater > 6000 ){
+
+    outputResult("recomendedVolume", "Рекомендуется разбить на три бака");
+    return;
+  } else if ( VolumeWater >= 3000 ){
+
+    outputResult("recomendedVolume", "Рекомендуется разбить на два бака");
+    return;
+  }
+
+  recomendedVolume = calcRecomendedVolumeWater(pMax, VolumeWater);
+
+  if( recomendedVolume ) {
+    outputResult("recomendedVolume", "<b>" + recomendedVolume  + " л.</b>");
+
+    var recomendedSeries = getRecomendedSeriesWater(recomendedVolume);
+    
+    outputResult("recomendedSeries", "<b>" + recomendedSeries + ".</b>");
+  } else {
+    outputResult("recomendedVolume", "Ошибка!");
+  }
 
 }

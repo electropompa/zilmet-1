@@ -1,0 +1,99 @@
+.product
+  .onsale
+    display: inline-block
+    position: absolute
+    padding: 0 5px
+    border-radius: 3px
+    background: $red
+    color: white
+    font-size: 12px
+    margin: 5px
+    z-index: 10
+
+  .wp-post-image
+    display: block
+    margin-bottom: 10px
+
+  .sku
+    font-style: italic
+
+  .quantity
+    .qty.input-text
+      padding: 3px 10px
+      max-width: 190px
+
+  .single_add_to_cart_button
+    @extend .blue-button
+
+  .variations 
+    td.label
+      padding: 10px 10px 10px 0
+      display: inline-block
+
+    .label
+      vertical-align: middle
+      font-size: 16px
+
+    .value
+      select
+        padding: 5px 10px
+        max-width: 360px
+
+  .reset_variations
+    padding-left: 5px
+
+  .single_variation_wrap
+    margin-top: 5px
+
+  .single_variation, .price
+    font-size: 16px
+    .amount
+      font-weight: bold
+      font-size: 22px
+
+  .quantity
+    margin: 15px 0
+
+  .screen-reader-text
+    display: block
+    width: 100%
+    height: 100%
+    position: relative!important
+
+  .product_meta
+    margin: 0 0 10px
+
+  .wc-tabs
+    display: none
+
+// Сообщения
+.woocommerce .woocommerce-message, 
+.woocommerce-message
+  border-top-color: $dark-blue
+  font-size: 15px 
+  &:before 
+    color: $dark-blue
+
+// Корзина
+.cart-collaterals
+  .cart_totals
+    .wc-proceed-to-checkout
+      .checkout-button
+        @extend .blue-button
+
+.woocommerce table.shop_table
+  .product-name
+    max-width: 240px
+
+.woocommerce .cart-collaterals .cart_totals, .woocommerce-page .cart-collaterals .cart_totals
+  width: 55%
+
+// Форма заказа
+.woocommerce
+  abbr.required
+    color: $red
+
+.woocommerce
+  .place-order
+    button.button.alt
+      @extend .blue-button

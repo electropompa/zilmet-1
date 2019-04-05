@@ -1,0 +1,38 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic)
+
+$body-font: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif
+
+$dark-blue: #283593
+$blue: #1976d2
+$red: #d32f2f
+
+$grey: #f9f9f9
+$text-grey: #474748
+
+$white: white
+
+.white
+  color: $white
+
+.blue
+  color: $blue
+
+.red
+  color: red
+
+.blue-button
+  display: inline-block
+  padding: 10px 30px
+  border: none
+  border-radius: 5px
+  background: $dark-blue
+  color: white
+  font-size: 16px
+  cursor: pointer
+  font-weight: 300
+  line-height: 1.5
+  &:hover
+    background: $red
+
+.grey
+  color: lighten($text-grey, 10)
