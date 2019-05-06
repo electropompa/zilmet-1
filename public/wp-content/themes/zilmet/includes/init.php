@@ -15,9 +15,10 @@ add_action( 'after_setup_theme', 'zilmet_setup' );
 
 function zilmet_style_method(){
   wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', '', '', '' );
-  wp_enqueue_style( 'zilmet-woocommerce', get_template_directory_uri() . '/woocommerce.css', null, 1.0, 'screen' );
+  // wp_enqueue_style( 'zilmet-woocommerce', get_template_directory_uri() . '/woocommerce.css', null, 1.0, 'screen' );
   // wp_enqueue_style( 'fixed', get_template_directory_uri() . "/css/fixed.css", '', '', '' );
   wp_enqueue_style( 'style', get_template_directory_uri() . "/css/style.css", '', '', '' );
+  // wp_enqueue_style( 'concat', get_template_directory_uri() . "/css/concat.min.css", '', '', '' );
 }
 
 if ( !is_admin() ) {
@@ -29,9 +30,11 @@ if ( !is_admin() ) {
 function zilmet_scripts_method(){
   wp_deregister_script('jquery');
   wp_enqueue_script( 'jquery', "https://yastatic.net/jquery/2.0.3/jquery.min.js", '', '', 'true' );
-  wp_enqueue_script( 'bootstrap', "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js", '', '', 'true' );
+  wp_enqueue_script( 'popper', "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js", '', '', 'true' );
+  wp_enqueue_script( 'bootstrap', "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", '', '', 'true' );
   wp_enqueue_script( 'maskedinput', get_template_directory_uri() . "/js/jquery.maskedinput.min.js", '', '', 'true' );
   wp_enqueue_script( 'js-calculator', get_template_directory_uri() . "/js/raschet_otopl.js", '', '', 'true' );
+  wp_enqueue_script( 'pushy', get_template_directory_uri() . "/js/pushy.min.js", '', '', 'true' );
   wp_enqueue_script( 'script', get_template_directory_uri() . "/js/script.js", '', '', 'true' );
 }
 add_action('wp_enqueue_scripts', 'zilmet_scripts_method');
@@ -41,6 +44,7 @@ function zilmet_register_menu(){
   register_nav_menus( array( 
     'primary_header_menu' => __( 'Верхнее меню' ), 
     'aside_menu' => __( 'Боковое меню' ), 
+    'mobile_menu' => __( 'Мобильное меню' ),
   ));
 }
 if (function_exists('register_nav_menus')) {

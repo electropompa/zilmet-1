@@ -75,8 +75,9 @@
     color: $dark-blue
 
 // Корзина
-.cart-collaterals
+.woocommerce .cart-collaterals
   .cart_totals
+    width: 100%
     .wc-proceed-to-checkout
       .checkout-button
         @extend .blue-button
@@ -85,13 +86,17 @@
   .product-name
     max-width: 240px
 
-.woocommerce .cart-collaterals .cart_totals, .woocommerce-page .cart-collaterals .cart_totals
-  width: 55%
+.woocommerce-privacy-policy-text p
+  font-size: 12px
 
 // Форма заказа
 .woocommerce
   abbr.required
     color: $red
+#order_review
+  .cart-subtotal
+    th, td
+      border-top: none
 
 .woocommerce
   .place-order

@@ -47,6 +47,10 @@ if ( post_password_required() ) {
 		</div>
 	</div>
 
+	<div class="application">
+		<?php if (get_field('application')) {the_field('application');} ?>
+	</div>
+
 	<div class="row">
 		<div class="col-md-6">
 

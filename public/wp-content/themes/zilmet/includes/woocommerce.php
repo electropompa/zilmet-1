@@ -72,7 +72,7 @@ function custom_call_for_price() {
 
 // Надпись на кнопке add-to-cart на странице товара
 function my_theme_cart_button_text() {
-  return 'Оформить заказ';
+  return 'Добавить в корзину';
 }
 add_filter( 'woocommerce_product_single_add_to_cart_text', 'my_theme_cart_button_text' );
 
@@ -335,10 +335,9 @@ function custom_override_checkout_fields( $f ) {
     $f['billing']['billing_city'],
     $f['billing']['billing_address_2'],
     // $f['billing']['billing_state'],
-    $f['billing']['billing_postcode']
+    $f['billing']['billing_postcode'],
+    $f['shipping']['shipping_address_1']
   );
-
-  $f['billing']['billing_country']['class'][0] = 'd-none';
 
   $f['billing']['billing_first_name']['label'] = 'ФИО / Название компании';
   $f['billing']['billing_first_name']['placeholder'] = 'Введите ФИО';
@@ -346,79 +345,67 @@ function custom_override_checkout_fields( $f ) {
   $f['billing']['billing_first_name']['class'][1] = 'row col-lg-6 mb-3';
   $f['billing']['billing_first_name']['label_class'][0] = 'col-12';
   $f['billing']['billing_first_name']['input_class'][0] = 'col-12';
-
-  $f['billing']['billing_address_1']['label'] = 'Адрес доставки';
-  $f['billing']['billing_address_1']['class'][2] = 'row col-lg-6 mb-3';
-  $f['billing']['billing_address_1']['label_class'][0] = 'col-12';
-  $f['billing']['billing_address_1']['input_class'][0] = 'col-12';
-  $f['billing']['billing_address_1']['reqired'] = false;
-
-  $f['billing']['billing_state']['label'] = 'Населенный пункт';
-  $f['billing']['billing_state']['class'][2] = 'row col-lg-6 mb-3';
-  $f['billing']['billing_state']['label_class'][0] = 'col-12';
-  $f['billing']['billing_state']['input_class'][0] = 'col-12';
+  $f['billing']['billing_first_name']['priority'] = 10;
 
   $f['billing']['billing_phone']['class'][2] = 'row col-lg-6 mb-3';
   $f['billing']['billing_phone']['label_class'][0] = 'col-12';
   $f['billing']['billing_phone']['input_class'][0] = 'col-12';
+  $f['billing']['billing_phone']['priority'] = 15;
 
   $f['billing']['billing_email']['class'][2] = 'row col-lg-6 mb-3';
   $f['billing']['billing_email']['label_class'][0] = 'col-12';
   $f['billing']['billing_email']['input_class'][0] = 'col-12';
+  $f['billing']['billing_email']['priority'] = 20;
+
+  $f['billing']['billing_state']['label'] = 'Населенный пункт'; // Эти поля не влияют, менять в .po файлах
+  $f['billing']['billing_state']['class'][2] = 'row col-lg-6 mb-3';
+  $f['billing']['billing_state']['label_class'][0] = 'col-12';
+  $f['billing']['billing_state']['input_class'][0] = 'col-12';
+  $f['billing']['billing_state']['required'] = false;
+  $f['billing']['billing_state']['priority'] = 50;
+
+  $f['billing']['billing_address_1']['label'] = 'Адрес доставки'; // Эти поля не влияют, менять в .po файлах
+  $f['billing']['billing_address_1']['class'][2] = 'row col-lg-6 mb-3';
+  $f['billing']['billing_address_1']['label_class'][0] = 'col-12';
+  $f['billing']['billing_address_1']['input_class'][0] = 'col-12';
+  $f['billing']['billing_address_1']['required'] = 0;
+  $f['billing']['billing_address_1']['priority'] = 80;
 
   $f['order']['order_comments']['label'] = 'Комментарий к доставке';
   $f['order']['order_comments']['class'][2] = 'row col-lg-12 mb-3';
   $f['order']['order_comments']['input_class'][0] = 'col-12';
-  $f['order']['order_comments']['reqired'] = false;
+  $f['order']['order_comments']['required'] = false;
   $f['order']['order_comments']['clear'] = true;
 
-  // $buf = ;
-  // echo '<pre>';
-  // print_r($f['billing']);
-  // echo '</pre>';
+  $f['billing']['billing_country']['class'][0] = 'd-none';
+  $f['billing']['billing_country']['priority'] = 90;
 
+  // print_pre($f);
   return $f;
-  // print_r($f);
 }
+
+function custom_override_default_address_fields( $address_fields ) {
+  $address_fields['address_1'][ 'required' ] = 0;
+  $address_fields['state'][ 'required' ] = 0;
+  // print_pre( $address_fields );
+  return $address_fields;
+}
+add_filter( 'woocommerce_default_address_fields' , 'custom_override_default_address_fields' );
 
 add_filter('woocommerce_variable_price_html', 'custom_variation_price', 10, 2);
 function custom_variation_price( $price, $product ) {
- $variation = $product->get_available_variations();
- $price = '';
- $price .= woocommerce_price($product->get_price());
+  $variation = $product->get_available_variations();
+  $price = '';
+  $price .= wc_price($product->get_price());
 
- if (count($variation) == 1){
-  return $price;
-} else {
-  return false;
-}
-}
-
-function sberbank_for_logged_user($available_gateways)
-{
-  global $woocommerce;
-
-  if ( !is_user_logged_in() ) { unset($available_gateways['rbspayment']); }
-
-  return $available_gateways;
-}
-// add_action('woocommerce_available_payment_gateways', 'sberbank_for_logged_user');
-
-function alter_shipping_methods($available_gateways){
-  global $woocommerce;
-
-  $chosen_titles = array();
-  $available_methods = $woocommerce->shipping->get_packages();
-  $chosen_rates = ( isset( $woocommerce->session ) ) ? $woocommerce->session->get( 'chosen_shipping_methods' ) : array();
-  
-  foreach ($available_methods as $method) {
-    foreach ($chosen_rates as $chosen) {
-      if( isset( $method['rates'][$chosen] ) ) $chosen_titles[] = $method['rates'][ $chosen ]->label;
-    }
-    if( in_array( 'Доставка до терминала транспортной компании', $chosen_titles ) ) {
-      unset($available_gateways['cod']);
-    }
-    return $available_gateways;
+  if (count($variation) == 1){
+    return $price;
+  } else {
+    return false;
   }
 }
-//add_action('woocommerce_available_payment_gateways', 'alter_shipping_methods');
+
+add_filter( 'woocommerce_cart_totals_order_total_html', 'delete_nds_tax_from_checkout', 10 );
+function delete_nds_tax_from_checkout( $value ) {
+  return preg_replace("/<small[^>]+?[^>]+>(.*?)<\/small>/i", '', $value);
+}
