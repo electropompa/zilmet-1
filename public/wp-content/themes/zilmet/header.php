@@ -2,16 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title><?php 
-  $queried_object = get_queried_object(); 
-  $taxonomy = $queried_object->taxonomy;
-  $term_id = $queried_object->term_id;
-
-  if(get_field('wc_title', $taxonomy . '_' . $term_id)){the_field('wc_title', $taxonomy . '_' . $term_id);} 
-  elseif (get_field('wc_title')) {the_field('wc_title');}
-  else {wp_title('',true);} ?></title>
-  <meta name="description" content="<?php if(get_field('wc_description', $taxonomy . '_' . $term_id)){the_field('wc_description', $taxonomy . '_' . $term_id);} else {the_field('wc_description');} ?>">
-  <meta name="keywords" content="<?php if(get_field('wc_keywords', $taxonomy . '_' . $term_id)){the_field('wc_keywords', $taxonomy . '_' . $term_id);} else {the_field('wc_keywords');} ?>">
+  <?php 
+    $queried_object = get_queried_object(); 
+    $taxonomy = $queried_object->taxonomy;
+    $term_id = $queried_object->term_id;
+  ?>
+  <title><?php the_meta_title($taxonomy, $term_id); ?></title>
+  <meta name="description" content="<?php the_meta_description($taxonomy, $term_id); ?>">
+  <meta name="keywords" content="<?php the_meta_keywords($taxonomy, $term_id); ?>">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="icon" href="<?php bloginfo('template_url'); ?>/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

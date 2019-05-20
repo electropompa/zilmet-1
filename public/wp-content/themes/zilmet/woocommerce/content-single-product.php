@@ -14,7 +14,7 @@
  * @package WooCommerce/Templates
  * @version 3.4.0
  */
-
+global $product;
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -29,6 +29,8 @@ if ( post_password_required() ) {
 	return;
 }
 ?>
+
+
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class(); ?>>
 
 <!-- 	<div class="row">
@@ -113,14 +115,9 @@ if ( post_password_required() ) {
 
 		<div class="row">
 			<div class="col-12">
-				<?php
-				if(get_field('specifications')){
-					the_field('specifications');
-				}
-				?>
+				<?=get_field('specifications') ? get_field('specifications') : '' ?>
 			</div>
 		</div>
 
 	</div>
-
-	<?php do_action( 'woocommerce_after_single_product' ); ?>
+	<?php do_action( 'woocommerce_after_single_product', $product ); ?>

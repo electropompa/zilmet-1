@@ -21,5 +21,35 @@
         }
       });
     });
+
+    $('#oneclick_modal_form').submit(function(e){
+      e.preventDefault();
+      var m_method=$(this).attr('method');
+      var m_action=$(this).attr('action');
+      var m_data=$(this).serialize();
+      $.ajax({
+        type: m_method,
+        url: m_action,
+        data: m_data,
+        success: function(result){
+          $('.modal-title').css("visibility", "hidden");
+          $('.modal-body, .modal-footer').css("display", "none");
+          $('.form-result').css("display", "block");
+          yaCounter21631393.reachGoal('name');
+        }
+      });
+    });
+
+    $('.one_click_order_button').on('click', function(){
+      var sku       = $(".sku").html();
+      var quantity  = $('input[name="quantity"]').val();
+      var price     = $('.woocommerce-Price-amount').html().replace(/<\/?[^>]+>/g,'').replace('&nbsp;',' ');
+
+      $('.oneclickOrderSendButton').attr('data-product-sku', sku);
+      $('.oneclickSku').html( "арт. " + sku);
+      $('input[name="oneclickOrderSku"]').val(sku);
+      $('input[name="oneclickOrderQuantity"]').val(quantity);
+      $('input[name="oneclickOrderPrice"]').val(price);
+    });
   });
 })(jQuery)

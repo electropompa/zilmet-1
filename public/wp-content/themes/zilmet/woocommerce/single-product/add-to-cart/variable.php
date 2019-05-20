@@ -31,7 +31,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 	<?php else : ?>
 		<?php foreach ( $attributes as $attribute_name => $options ) : ?>
 		<div class="row variations">
-			<div class="col-12 label mb-2">
+			<div class="col-12 label">
 				<label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?></label>
 			</div>
 			<div class="col-12 value mb-2">

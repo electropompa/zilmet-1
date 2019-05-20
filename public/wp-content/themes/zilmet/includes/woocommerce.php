@@ -21,40 +21,15 @@ remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 3
  */
 add_filter( 'woocommerce_product_tabs', 'woo_remove_product_tabs', 98 );
 function woo_remove_product_tabs( $tabs ) {
-
   // unset( $tabs['description'] );        // Remove the description tab
   unset( $tabs['reviews'] );      // Remove the reviews tab
   unset( $tabs['additional_information'] );   // Remove the additional information tab
-
   return $tabs;
 }
-
-// remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
 
 /* реком товары */
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
-
-//remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
-
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
-// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
-
-
-// add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields' );
-// function custom_override_checkout_fields( $fields ) { /*Убрали ненужные*/
-//      unset($fields['billing']['billing_company']);
-//      unset($fields['billing']['billing_country']);
-//      unset($fields['billing']['billing_address_1']);
-//      unset($fields['billing']['billing_address_2']);
-//      unset($fields['billing']['billing_state']);
-//      unset($fields['billing']['billing_postcode']);
-//      return $fields;
-// }
 
 add_filter( 'woocommerce_variable_free_price_html',  'hide_free_price_notice' );
 add_filter( 'woocommerce_free_price_html',           'hide_free_price_notice' );
@@ -75,14 +50,6 @@ function my_theme_cart_button_text() {
   return 'Добавить в корзину';
 }
 add_filter( 'woocommerce_product_single_add_to_cart_text', 'my_theme_cart_button_text' );
-
-
-// add_filter('woocommerce_billing_fields', 'custom_woocommerce_billing_fields');
-// function custom_woocommerce_billing_fields( $fields ) {
-// $fields['billing_address_1']['class'] = array( 'form-row-wide' ); /*Сделаи широким поле адреса*/
-// return $fields;
-// }
-
 
 // Выводим поля для корзины
 // переопределяем функцию для того, чтобы задать другие обертки для полей с классами Bootstrap
@@ -409,3 +376,8 @@ add_filter( 'woocommerce_cart_totals_order_total_html', 'delete_nds_tax_from_che
 function delete_nds_tax_from_checkout( $value ) {
   return preg_replace("/<small[^>]+?[^>]+>(.*?)<\/small>/i", '', $value);
 }
+
+function add_oneclick_modal_form( $product ) {
+  require 'oneclick_modal_form.php';
+}
+add_action( 'woocommerce_after_single_product', 'add_oneclick_modal_form', 100);
