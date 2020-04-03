@@ -2,6 +2,7 @@
 @import bootstrap-upd
 @import typography
 @import advert
+@import front-page
 @import inner-pages
 @import woocommerce
 @import pushy
@@ -17,6 +18,7 @@ body
   font-family: $body-font
   @media( min-width: 576px )
     background-color: $grey
+
 
 .content-wrapper
   margin-top: 85px
@@ -92,6 +94,8 @@ header
     margin: 0
     padding: 0
     line-height: 1
+    @media(max-width: 1199px)
+      font-size: 22px
 
     &:hover 
       color: $red
@@ -102,6 +106,9 @@ header
     font-size: 28px
     margin-top: 5px
     line-height: 1
+    @media(max-width: 1199px)
+      font-size: 26px
+
     &:hover
       color: $red
 
@@ -111,6 +118,8 @@ header
     font-size: 14px
     margin: 0
     padding: 0
+    @media(max-width: 1199px)
+      font-size: 13px
   
   time 
     color: $text-grey
@@ -170,7 +179,7 @@ nav.navigation
     height: 100%
     background: $dark-blue
     border-bottom: 1px solid lighten($dark-blue, 30)
-    text-align: right
+    text-align: left
 
     &:last-child 
       border-bottom: none
@@ -188,6 +197,25 @@ nav.navigation
       padding: 8px 10px
       width: 100%
       height: 100%
+
+.sidebar-banner-wrapper
+  margin-top: 20px
+
+#sidebar-banner
+  margin-top: 10px
+  background: $red
+  color: white
+  padding: 15px
+  box-shadow: 0 1px 3px transparentize($red, 0.88), 0 1px 2px transparentize($red, 0.66)
+  p
+    font-size: 14px
+    margin-bottom: 0
+    line-height: 1.8
+    letter-spacing: 1px
+  a
+    color: white
+    text-decoration: underline
+
 
 .dp_breadcrumb_main
   margin-bottom: 20px
@@ -294,3 +322,6 @@ footer
       color: white
       &:hover
         text-decoration: none
+
+.grecaptcha-badge
+  bottom: 65px!important

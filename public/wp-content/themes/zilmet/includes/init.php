@@ -33,7 +33,7 @@ function zilmet_scripts_method(){
   wp_enqueue_script( 'popper', "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js", '', '', 'true' );
   wp_enqueue_script( 'bootstrap', "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", '', '', 'true' );
   wp_enqueue_script( 'maskedinput', get_template_directory_uri() . "/js/jquery.maskedinput.min.js", '', '', 'true' );
-  wp_enqueue_script( 'js-calculator', get_template_directory_uri() . "/js/raschet_otopl.js", '', '', 'true' );
+  // wp_enqueue_script( 'js-calculator', get_template_directory_uri() . "/js/raschet_otopl.js", '', '', 'true' );
   wp_enqueue_script( 'pushy', get_template_directory_uri() . "/js/pushy.min.js", '', '', 'true' );
   wp_enqueue_script( 'script', get_template_directory_uri() . "/js/script.js", '', '', 'true' );
 }
@@ -68,7 +68,7 @@ function true_register_wp_sidebars() {
 add_action( 'widgets_init', 'true_register_wp_sidebars' );
 
 // Отключаем сжатие изображений
-add_filter( 'jpeg_quality', create_function( '', 'return 100;' ) );
+add_filter( 'jpeg_quality', function(){ return 100; } );
 
 // Отключаем сам REST API
 add_filter('rest_enabled', '__return_false');

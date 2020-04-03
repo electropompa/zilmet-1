@@ -1,3 +1,12 @@
+<script src="https://www.google.com/recaptcha/api.js?render=6LeCBr8UAAAAALj7Z63zHb31j4NLNKWlcne7YwF8"></script>
+<script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LeCBr8UAAAAALj7Z63zHb31j4NLNKWlcne7YwF8', {action: 'homepage'}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value=token;
+        });
+    });
+</script>
+
 <!-- Yandex.Metrika counter --> <script type="text/javascript" > (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter21631393 = new Ya.Metrika2({ id:21631393, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/21631393" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
 
 <script>

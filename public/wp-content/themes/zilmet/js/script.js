@@ -22,6 +22,7 @@
       });
     });
 
+      // Заказ в один клик
     $('#oneclick_modal_form').submit(function(e){
       e.preventDefault();
       var m_method=$(this).attr('method');
@@ -35,7 +36,7 @@
           $('.modal-title').css("visibility", "hidden");
           $('.modal-body, .modal-footer').css("display", "none");
           $('.form-result').css("display", "block");
-          yaCounter21631393.reachGoal('name');
+          yaCounter21631393.reachGoal('oneclick');
         }
       });
     });
@@ -51,5 +52,25 @@
       $('input[name="oneclickOrderQuantity"]').val(quantity);
       $('input[name="oneclickOrderPrice"]').val(price);
     });
+
+        // Отправка письма директору
+      $('#sendQuestionForm').submit(function(e){
+          e.preventDefault();
+          var m_method=$(this).attr('method');
+          var m_action=$(this).attr('action');
+          var m_data=$(this).serialize();
+          $.ajax({
+              type: m_method,
+              url: m_action,
+              data: m_data,
+              success: function(result){
+                  console.log(result);
+                  $('#questionForm .modal-title').css("visibility", "hidden");
+                  $('#questionForm .modal-body, #sendQuestionForm .modal-footer').css("display", "none");
+                  $('#questionForm .form-result').css("display", "block");
+              }
+          });
+      });
+
   });
-})(jQuery)
+})(jQuery);

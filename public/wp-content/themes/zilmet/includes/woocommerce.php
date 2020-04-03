@@ -381,3 +381,15 @@ function add_oneclick_modal_form( $product ) {
   require 'oneclick_modal_form.php';
 }
 add_action( 'woocommerce_after_single_product', 'add_oneclick_modal_form', 100);
+
+//Скрыть доставку курьером для стоимости заказа менее 3000 рублей
+add_filter( 'zilmet_avaliable_methods', 'courier_min_total' );
+function courier_min_total($avaliable_methods){
+  global $woocommerce;
+  $total = $woocommerce->cart->get_subtotal() + $woocommerce->cart->get_subtotal_tax();
+  if( $total < 5000 ) {
+    unset($avaliable_methods["flat_rate:4"]);
+  }
+
+  return $avaliable_methods;
+}

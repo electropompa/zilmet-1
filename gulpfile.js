@@ -1,4 +1,4 @@
-'use strict';
+;'use strict';
 
 var gulp          = require('gulp'),
     sourcemaps    = require('gulp-sourcemaps'),
@@ -15,6 +15,7 @@ gulp.task('watch', function(){
   livereload.listen();
   gulp.watch( sassDir + '*.(sass|scss)', gulp.series( 'sass'));
   gulp.watch( themeDir + '**/*.php').on('change', livereload.changed);
+  gulp.watch( 'public/export/*.php').on('change', livereload.changed);
   gulp.watch( themeDir + 'css/*.css').on('change', livereload.changed);
   gulp.watch( themeDir + 'js/*.js').on('change', livereload.changed);
 });

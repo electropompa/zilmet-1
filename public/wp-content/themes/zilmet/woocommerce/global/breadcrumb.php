@@ -38,16 +38,11 @@ if ( ! empty( $breadcrumb ) ) {
 			$taxonomy = $queried_object->taxonomy;
 			$term_id = $queried_object->term_id;
 			
-			if(get_field('breadcrumb_last_node', $taxonomy . '_' . $term_id))
-			{
-				echo the_field('breadcrumb_last_node', $taxonomy . '_' . $term_id);
-			}
-			elseif ($taxonomy !== "product_cat" && get_field('breadcrumb_last_node')) 
-			{
-				echo the_field('breadcrumb_last_node');
-			}
-			else 
-			{
+			if(get_field('breadcrumb_last_node', $taxonomy . '_' . $term_id)) {
+				the_field('breadcrumb_last_node', $taxonomy . '_' . $term_id);
+			} elseif ($taxonomy !== "product_cat" && get_field('breadcrumb_last_node')) {
+				the_field('breadcrumb_last_node');
+			} else {
 				echo esc_html( $crumb[0] );
 			}
 

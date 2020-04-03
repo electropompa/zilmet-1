@@ -34,6 +34,8 @@ images/
 # Движок WP
 *.log
 
+api google/
+docs/
 PSD/
 PDF/
 /public/*

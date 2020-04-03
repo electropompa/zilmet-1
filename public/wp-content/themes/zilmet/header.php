@@ -19,17 +19,17 @@
   wp_head(); ?>
 </head>
 <body>
-  <!--section class="header-top-advert">
+  <section class="header-top-advert">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <p class="text-center d-flex align-items-center justify-content-center">
-            <span class="white">С 1 июля цены снижены на 5%</span>
+              <a href="/contact/"><span class="white">Открылся склад в г. Краснодар</span></a>
           </p>
         </div>
       </div>
     </div>
-  </section -->
+  </section>
   <!-- Pushy Menu -->
   <nav class="pushy pushy-left">
     <div class="pushy-content">
@@ -52,7 +52,6 @@
 </nav>
 
 <div id="container">
-
   <!-- Site Overlay -->
   <div class="site-overlay"></div>
 
@@ -72,7 +71,7 @@
               </a>
             </div>
 
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-left text-sm-right order-last">
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3 text-left text-sm-right order-md-last">
               <a class="phone-moscow d-none d-sm-block" href="tel:+74959819244" rel="nofollow">+7 (495) 981-92-44</a>
               <a class="header-phone d-none d-sm-block" href="tel:88001000077" rel="nofollow"> 8 800 100 00 77</a>
               <div class="call-free-desc d-none d-sm-block">Звонок по России бесплатный</div>
@@ -80,17 +79,20 @@
               <time datetime="Sa 09:00-17:00"><small>Пт:</small> 9.00 - 17.00</time>
             </div>
 
-            <div class="col-6 col-sm-12 col-md-12 col-lg-6 offset-md-1">
+            <div class="col-6 col-sm-12 col-md-5 col-lg-7 offset-xl-1 col-xl-6">
               <div class="row contacts">
-                <div class="d-none d-sm-block col-sm-12">
+                <div class="d-none d-lg-block col-sm-12">
                   <p class="header-desc text-center">Эксклюзивный дистрибьютор <br class="hidden-lg-up">Zilmet&nbsp;S.p.A. в России</p>
                 </div>
-                <div class="col-12 col-sm-12 col-md-5 col-lg-8 text-center text-md-left">
+                <div class="col-12 col-sm-6 col-md-12 col-lg-5 text-center text-sm-left text-md-center text-lg-left mb-md-3 mb-lg-0">
                   <a class="header-mail mb-3 mb-sm-1" href="mailto:zilmet@zilmet.ru" rel="nofollow"><img src="/wp-content/themes/zilmet/images/mail.svg" class="mail-ico d-none d-sm-inline-block" width="19" height="25" alt="">zilmet@zilmet.ru</a>
                   <br class="hidden-sm-down">
                   <img src="/images/questions-circular-button.svg" alt="Доставка" class="d-none d-sm-inline-block" width="20" height="20"> <a class="shipping d-none d-sm-inline-block" href="/help/">Оплата и доставка</a>
                 </div>
-                <div class="col-12 col-md-7 col-lg-4 col-lg-offset-1  text-center">
+                  <div class="d-none d-lg-block col-lg-3 text-center">
+                      <button class="transparent-button" type="button" data-toggle="modal" data-target="#questionForm"><span class="dashed">Написать письмо</span></button>
+                  </div>
+                <div class="col-12 col-sm-6 col-md-12 col-lg-4 text-center">
                   <div class="row no-gutters">
                     <div class="col-8 text-right">
                       <a href="/checkout/" class="header_cart_link" title="Корзина" rel="nofollow">
