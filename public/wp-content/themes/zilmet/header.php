@@ -13,23 +13,35 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="icon" href="<?php bloginfo('template_url'); ?>/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-W6CF55G');</script>
+	<!-- End Google Tag Manager -->
   
   <?php 
   echo get_post_meta($post->ID, 'yandexmap', true); 
   wp_head(); ?>
 </head>
 <body>
-  <section class="header-top-advert">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <p class="text-center d-flex align-items-center justify-content-center">
-              <a href="/contact/"><span class="white">Открылся склад в г. Краснодар</span></a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+<?php wp_body_open(); ?>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6CF55G"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+<!--  <section class="header-top-advert">-->
+<!--    <div class="container">-->
+<!--      <div class="row">-->
+<!--        <div class="col-12">-->
+<!--          <p class="text-center d-flex align-items-center justify-content-center">-->
+<!--              <a href="/contact/"><span class="white">Открылся склад в г. Краснодар! тел. +7(928) 202 42 42</span></a>-->
+<!--          </p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </section>-->
   <!-- Pushy Menu -->
   <nav class="pushy pushy-left">
     <div class="pushy-content">

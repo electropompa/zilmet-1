@@ -16,7 +16,7 @@ if( isset($_POST['questionEmail']) ){
 		return $Return;
 	}
 
-	$Return = getCaptcha($_POST['g-recaptcha-response']);
+	$Return = getCaptcha( $_POST['g-recaptcha-response'] );
 
 	if($Return->success == true && $Return->score > 0.5){
 		mail(

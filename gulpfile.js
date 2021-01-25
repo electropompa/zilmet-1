@@ -14,6 +14,7 @@ var themeDir = "public/wp-content/themes/zilmet/",
 gulp.task('watch', function(){
   livereload.listen();
   gulp.watch( sassDir + '*.(sass|scss)', gulp.series( 'sass'));
+  gulp.watch( 'public/export/*.php').on('change', livereload.changed);
   gulp.watch( themeDir + '**/*.php').on('change', livereload.changed);
   gulp.watch( 'public/export/*.php').on('change', livereload.changed);
   gulp.watch( themeDir + 'css/*.css').on('change', livereload.changed);

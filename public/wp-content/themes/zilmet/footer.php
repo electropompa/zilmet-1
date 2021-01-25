@@ -23,9 +23,9 @@
             +7 (495) 981-92-44, 8 800 100 00 77
             <br>
             <small>141707, МО, г. Долгопрудный, Лихачевский проезд, д.8 <br>
-            OOO "Промкомплект" <br>
-            ИНН/КПП 7714354583/771401001 <br>
-            ОГРН 1157746829206</small>
+            OOO "Электропомпа" <br>
+            ИНН 5047194022 КПП 772901001<br>
+            ОГРН 1175029003665</small>
           </p>
         </div>
       </div>
@@ -36,6 +36,11 @@
       </div>
     </div>
   </footer>
+  <div id="banner_zapchasti">
+      <a href="//zapchasti-kotla.ru/" target="_blank">
+          <img src="/images/banner-zapchasti-kotla.jpg" alt="Интернет-магазин запчастей для газовых котлов">
+      </a>
+  </div>
 </div><!-- #container для PUSHY -->
 
 <?php if ( is_active_sidebar( 'true_side' ) ) : ?>
@@ -87,45 +92,6 @@ wp_footer();
           </form>
           <div class="form-result text-center my-5">Письмо отправлено!</div>
       </div>
-  </div>
-</div>
-
-
-<!-- Modal -->
-<script>
-    ;(function($){
-        $(function(){
-            function getCookie(name) {
-                var matches = document.cookie.match(new RegExp(
-                    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-                ));
-                return matches ? decodeURIComponent(matches[1]) : undefined;
-            }
-
-            showModal = getCookie( 'covidModalBox' );
-            if(!showModal){
-                setTimeout(function(){ $('#covidModalCenter').modal('show');}, 3000);
-                document.cookie = "covidModalBox=ture";
-            }
-        })
-    })(jQuery);
-</script>
-
-<div class="modal fade" id="covidModalCenter" tabindex="-1" role="dialog" aria-labelledby="covidModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="covidModalCenterTitle">Уважаемые покупатели!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Мы вынуждены уйти на незапланированные каникулы за-за covid-19 с 30 марта по 5 апреля, но вы можете оставить заявку на оборудование на нашем сайте.</p>
-        <p>Мы обязательно ответим вам, когда вернемся на свои рабочие места. Спасибо за понимание.</p>
-        <p>Берегите себя и будьте здоровы!</p>
-      </div>
-    </div>
   </div>
 </div>
 

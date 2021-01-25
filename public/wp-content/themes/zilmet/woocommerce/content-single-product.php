@@ -26,6 +26,7 @@ do_action( 'woocommerce_before_single_product' );
 
 if ( post_password_required() ) {
 	echo get_the_password_form(); // WPCS: XSS ok.
+
 	return;
 }
 ?>
@@ -33,28 +34,30 @@ if ( post_password_required() ) {
 
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class(); ?>>
 
-<!-- 	<div class="row">
-		<div class="col-12 mb-2">
-				<img src="/wp-content/themes/zilmet/images/banner-60-year.jpg" alt="Акция на Zilmet для России">
-		</div>
-	</div> -->
+    <!-- 	<div class="row">
+			<div class="col-12 mb-2">
+					<img src="/wp-content/themes/zilmet/images/banner-60-year.jpg" alt="Акция на Zilmet для России">
+			</div>
+		</div> -->
 
-	<div class="row">
-		<div class="col-12">
+    <div class="row">
+        <div class="col-12">
 			<?php
 			/* Переносим наверх тайтл */
 			add_action( 'woocommerce_single_product_title', 'woocommerce_template_single_title', 10 );
 			do_action( 'woocommerce_single_product_title' );
 			?>
-		</div>
-	</div>
+        </div>
+    </div>
 
-	<div class="application">
-		<?php if (get_field('application')) {the_field('application');} ?>
-	</div>
+    <div class="application">
+		<?php if ( get_field( 'application' ) ) {
+			the_field( 'application' );
+		} ?>
+    </div>
 
-	<div class="row">
-		<div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6">
 
 			<?php
 			/**
@@ -65,9 +68,9 @@ if ( post_password_required() ) {
 			 */
 			do_action( 'woocommerce_before_single_product_summary' );
 			?>
-		</div>
-		<div class="col-md-6">
-			<div class="summary entry-summary">
+        </div>
+        <div class="col-md-6">
+            <div class="summary entry-summary">
 				<?php
 				/**
 				 * Hook: woocommerce_single_product_summary.
@@ -84,40 +87,40 @@ if ( post_password_required() ) {
 				/* артикул наверх */
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
 				add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 5 );
-				
+
 				/* убираем заголовок, рейтинги, диапазон цен */
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
 				remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
 				//remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
-				
+
 				do_action( 'woocommerce_single_product_summary' );
 
 				?>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 
-	<div class="row">
-		<div class="col-12">
+    <div class="row">
+        <div class="col-12">
 			<?php
-				/**
-				 * Hook: woocommerce_after_single_product_summary.
-				 *
-				 * @hooked woocommerce_output_product_data_tabs - 10
-				 * @hooked woocommerce_upsell_display - 15
-				 * @hooked woocommerce_output_related_products - 20
-				 */
-				do_action( 'woocommerce_after_single_product_summary' );
-				?>
-			</div>
-		</div>
+			/**
+			 * Hook: woocommerce_after_single_product_summary.
+			 *
+			 * @hooked woocommerce_output_product_data_tabs - 10
+			 * @hooked woocommerce_upsell_display - 15
+			 * @hooked woocommerce_output_related_products - 20
+			 */
+			do_action( 'woocommerce_after_single_product_summary' );
+			?>
+        </div>
+    </div>
 
-		<div class="row">
-			<div class="col-12">
-				<?=get_field('specifications') ? get_field('specifications') : '' ?>
-			</div>
-		</div>
+    <div class="row">
+        <div class="col-12">
+			<?= get_field( 'specifications' ) ? get_field( 'specifications' ) : '' ?>
+        </div>
+    </div>
 
-	</div>
-	<?php do_action( 'woocommerce_after_single_product', $product ); ?>
+</div>
+<?php do_action( 'woocommerce_after_single_product', $product ); ?>

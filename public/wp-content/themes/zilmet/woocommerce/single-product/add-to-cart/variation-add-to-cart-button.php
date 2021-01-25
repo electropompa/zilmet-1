@@ -27,7 +27,7 @@ global $product;
 
   <button type="submit" class="single_add_to_cart_button button alt"><?=esc_html( $product->single_add_to_cart_text() );?></button>
 
-  <button type="button" data-toggle="modal" data-target="#one_click_order" class="one_click_order_button">Заказать в 1 клик</button>
+  <button type="button" data-toggle="modal" data-target="#one_click_order" class="one_click_order_button">Оставить заявку</button>
 
   <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 
